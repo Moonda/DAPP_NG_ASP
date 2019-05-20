@@ -19,7 +19,7 @@ export class ErrorIntrerceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError(error => {
         if (error instanceof HttpErrorResponse) {
-          if( error.status === 401){
+          if (error.status === 401) {
             return throwError(error.statusText);
           }
           const applicationError = error.headers.get('Application-Error');
@@ -29,16 +29,17 @@ export class ErrorIntrerceptor implements HttpInterceptor {
           }
           const serverError = error.error;
           let modelStateErrors = '';
-          console.log(serverError);
+          // console.log(serverError);
           if (serverError && typeof serverError === 'object') {
             for (const key in serverError) {
               if (serverError[key]) {
-                // if (typeof serverError[key] === 'object') {
-                //   for (const _key in serverError[key]) {
-                //   console.log(serverError[key][_key]); 
-                //   }
-                // }
-                modelStateErrors += serverError[key] + '\n';
+                if (typeof serverError[key] === 'object') {
+                  for (const _key in serverError[key]) {
+                   // console.log(serverError[key][_key]);
+                    modelStateErrors += serverError[key][_key] + '\n';
+                  }
+                }
+                // modelStateErrors += serverError[key][key] + '\n';
               }
             }
           }

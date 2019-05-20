@@ -4,7 +4,7 @@ using DatingApp.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.API.Data
-{
+{   
     public class AuthRepository : IAuthRepository
     {
         private readonly DataContext _context;

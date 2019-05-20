@@ -26,6 +26,7 @@ namespace DatingApp.API.Controllers
         }
 
         //[HttpGet]
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
@@ -47,7 +48,7 @@ namespace DatingApp.API.Controllers
             return StatusCode(201);
 
         }
-
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {   
@@ -65,8 +66,7 @@ namespace DatingApp.API.Controllers
                  new Claim(ClaimTypes.Name, userFromRepo.Username)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8
-            .GetBytes(_config.GetSection("AppSettings: token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes( _config.GetSection("AppSettings:token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -79,9 +79,10 @@ namespace DatingApp.API.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok( new {
+            return Ok( new { 
                 token = tokenHandler.WriteToken(token)
             });
+            // return StatusCode(200);
         }
 
         // GET api/values
