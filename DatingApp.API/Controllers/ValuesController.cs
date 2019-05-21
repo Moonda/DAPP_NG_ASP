@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.API.Data;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace DatingApp.API.Controllers
 
         [AllowAnonymous]
         [HttpGet]
+        [EnableQuery]
         public async Task<IActionResult> GetValues()
         {
             var values = await _context.Values.ToListAsync();

@@ -19,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Diagnostics;
 using DatingApp.API.Helpers;
+using Microsoft.AspNet.OData.Extensions;
 
 namespace DatingApp.API
 {
@@ -47,6 +48,7 @@ namespace DatingApp.API
                         ValidateAudience = false
                     };
                 });
+            services.AddOData();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,7 +78,12 @@ namespace DatingApp.API
             // app.UseHttpsRedirection();
             app.UseCors( x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader() );
             app.UseAuthentication();
-            app.UseMvc();
+            app.UseMvc(
+                routeBuilder =>{
+                    routeBuilder.EnableDependencyInjection();
+                    routeBuilder.Expand().Filter().Count().Select().OrderBy();
+                }
+            );
         }
     }
 }
