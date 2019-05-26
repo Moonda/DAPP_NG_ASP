@@ -20,12 +20,11 @@ export class NavComponent implements OnInit {
   login() {
     this.authService.login(this.model).subscribe(
       next => {
+        this.sendMessage();
         this.alertify.success('Logged in successfully');
       },
       error => {
-       
           this.alertify.error(error);
-
       },
       () => {
         this.router.navigate(['/members']);
@@ -41,5 +40,15 @@ export class NavComponent implements OnInit {
     localStorage.removeItem('token');
     this.alertify.message('logged out');
     this.router.navigate(['/home']);
+  }
+  sendMessage() {
+    this.authService.sendSMS().subscribe(
+      (response: Response) => {
+        console.log(response);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 }

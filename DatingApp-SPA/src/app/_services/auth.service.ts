@@ -22,7 +22,7 @@ export class AuthService {
         if (user) {
           localStorage.setItem('token', user.token);
           this.decodedToken = this.jwtHelper.decodeToken(user.token);
-          console.log(this.decodedToken);
+          // console.log(this.decodedToken);
         }
       })
     );
@@ -32,9 +32,23 @@ export class AuthService {
     return this.http.post(this.baseUrl + 'register', model);
   }
 
-  loggedIn(){
+  loggedIn() {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  sendSMS() {
+ const apikey = 'x4bd1+7Lmao-SUk9RR5cHS3BxiJyl8k0W4hqhuL5v4';
+ const address = 'http://api.txtlocal.com/send/?';
+ const message = 'Hello from Namibia';
+// tslint:disable-next-line: indent
+	// message = Server.urlencode(message)
+ const numbers = '264816939676';
+ const sender = 'Ananias';
+// tslint:disable-next-line: max-line-length
+ const url = 'https://rest.nexmo.com/sms/json?api_key=8d071417&to=264816939676&text=Hello from Ananias Code&from=Ananias&api_secret=LPyDhxmheuVCgy1U';
+ console.log(url);
+    return this.http.get(url);
   }
 
 }
